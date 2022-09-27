@@ -1,11 +1,7 @@
 # mycode
 Tracking my code
 
-Initial repo
-
-## Getting Started
-
-### Prerequisites
+Learning how to utilize version control project with git
 
 ## Built With
 
