@@ -4,7 +4,7 @@
 
 def main():
     animallist = ["Fox", "Fly", "Ant", "Bee", "Cod", "Cat", "Dog", "Yak", "Cow", "Hen", "Koi", "Hog", "Jay", "Kit"]
-    print(animallist)
+    print(" ".join(animallist))
 
 main()
 
