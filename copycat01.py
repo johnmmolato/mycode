@@ -14,6 +14,7 @@ def main():
     shutil.copy("5g_research/sdn_network.txt", "5g_research/sdn_network.txt.copy")
 
     # Copy the entire directorya to directoryb
+    os.system("rm -rf /home/student/mycode/5g_research_backup/")
     shutil.copytree("5g_research/", "5g_research_backup/")
 
 # main guard
