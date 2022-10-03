@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Alta3 Research || Author RZFeeser@alta3.com
+"""JMolato
 Learning how to use functions"""
 
 ## Installs the crayons package.
