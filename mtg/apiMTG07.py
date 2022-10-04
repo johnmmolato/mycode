@@ -27,7 +27,7 @@ def main():
     cards = resp.json()
     with open("4de_cards.set","w") as mtgfile:
         for card in cards:
-            print(f'Your set:{cards.get(setcode)}', file=mtgfile)
+            print(f'Your set:{cards.get(cards)}', file=mtgfile)
 
 if __name__ == "__main__":
     main()
