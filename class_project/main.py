@@ -5,6 +5,7 @@
 # Import
 from tkinter import *
 from class_project import add_user
+from class_project import add_item
 
 
 class Main:
@@ -28,7 +29,7 @@ class Main:
         # inventory button
         self.iconsearch = PhotoImage(file="icons/search.png")
         self.btnsearch = Button(top_frame, text="Inventory", font="arial 14 bold", padx=20, pady=6,
-                                command=self.inv_edit)
+                                command=self.add_inv)
         self.btnsearch.configure(image=self.iconsearch, compound=LEFT)
         self.btnsearch.pack(side=LEFT, padx=50)
         # search bar
@@ -47,8 +48,8 @@ class Main:
     def add_user(self):
         user_add = add_user.AddUser()
 
-    def inv_edit(self):
-        print("edit inventory")
+    def add_inv(self):
+        inventory = add_item.AddItem()
 
     def search_inv(self):
         print("search inventory")

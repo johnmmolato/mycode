@@ -1,7 +1,10 @@
 """Add a user helper for main"""
 from tkinter import *
+from tkinter import messagebox
 import sqlite3
 
+connection = sqlite3.connect("inventory.db")
+cursor = connection.cursor()
 
 class AddUser(Toplevel):
     def __init__(self):
@@ -38,5 +41,18 @@ class AddUser(Toplevel):
         self.button.place(x=250, y=250)
 
     def add_user(self):
-        print('this is where i add data to db')
+        first_name = self.f_name_entry.get()
+        last_name = self.l_name_entry.get()
+        email = self.email_entry.get()
+        phone_number = self.phone_number_entry.get()
 
+        if first_name and last_name and email and phone_number != "":
+            try:
+                cursor.execute("INSERT INTO 'users' (first_name, last_name, email, phone_number) VALUES (?,?,?,?)",
+                               (first_name, last_name, email, phone_number))
+                connection.commit()
+                messagebox.showinfo("Successful", "Successfully added to the database", icon="info")
+            except Exception as error:
+                messagebox.showerror(error, "Failed to add to the database", icon="warning")
+        else:
+            messagebox.showerror("Fields are required", " Please fill in all fields", icon="warning")
