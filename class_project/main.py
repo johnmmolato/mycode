@@ -9,11 +9,104 @@ from tkinter import messagebox
 from tkinter import ttk
 import database
 
-"""main class that initializes the app"""
-class Inventory:
-    """inventory class host"""
+
+def main():
+    """main method creates window"""
+    window = Tk()
+    app = LoginWindow(window)
+    window.mainloop()
+
+
+class LoginWindow:
+    """login class"""
+
     def __init__(self, master):
         self.master = master
+        self.master.title("Login System")
+        self.master.geometry("1600x1000")
+        self.master.config(bg="#c1e7f7")
+        self.frame = Frame(self.master, bg="#c1e7f7")
+        self.frame.pack()
+
+        # label and fields
+        self.user_name = StringVar()
+        self.user_password = StringVar()
+        self.title_label = Label(self.frame, text="Inventory Login System", font="arial 30 bold"
+                                 , bg="#c1e7f7", fg="black")
+        self.title_label.grid(row=0, column=0, columnspan=4, pady=50)
+        self.login_frame = Frame(self.frame, width=1200, height=400, relief="ridge"
+                                 , bg="#71c7f5", bd=10)
+        self.login_frame.grid(row=1, column=0)
+        self.login_btn_frame = Frame(self.frame, width=1200, height=400
+                                     , relief="ridge", bg="#71c7f5", bd=10)
+        self.login_btn_frame.grid(row=2, column=0)
+
+        self.user_label = Label(self.login_frame, text="User Name"
+                                , font="arial 23 bold", bd=10, bg="#71f5f0")
+        self.user_label.grid(row=0, column=0)
+        self.user_entry = Entry(self.login_frame, font="arial, 23 bold", relief="ridge"
+                                , bd=10, textvariable=self.user_name)
+        self.user_entry.grid(row=0, column=1)
+        self.password_label = Label(self.login_frame, text="User Password"
+                                    , font="arial 23 bold", bd=10, bg="#71f5f0")
+        self.password_label.grid(row=1, column=0)
+        self.password_entry = Entry(self.login_frame, font="arial, 23 bold", relief="ridge"
+                                    , bd=10, show="*", textvariable=self.user_password)
+        self.password_entry.grid(row=1, column=1)
+
+        # login button
+        self.login_btn = Button(self.login_btn_frame, relief="raised", text="Login"
+                                , width=20, font="arial 23 bold", command=self.login_cred)
+        self.login_btn.grid(row=3, column=0)
+        # clear button
+        self.clear_btn = Button(self.login_btn_frame, text="Clear", width=20
+                                , font="arial 23 bold", command=self.clear_cred)
+        self.clear_btn.grid(row=3, column=1)
+        # exit button
+        self.exit_btn = Button(self.login_btn_frame, text="Exit", width=20
+                               , font="arial 23 bold", command=self.exit_login)
+        self.exit_btn.grid(row=3, column=2)
+
+    def inv_window(self):
+        """helper to switch to main window"""
+        self.main_window = Toplevel(self.master)
+        self.app = Inventory(self.main_window)
+
+    def exit_login(self):
+        """exit when user click yes"""
+        self.exit_login = messagebox.askyesno("System", "Are you sure you want\
+         to exit?", icon="warning")
+        if self.exit_login > 0:
+            self.master.destroy()
+        else:
+            command = self.inv_window
+            return command
+
+    def clear_cred(self):
+        """clear input fields"""
+        self.user_entry.delete(0, END)
+        self.password_entry.delete(0, END)
+
+    def login_cred(self):
+        """check user credential, if correct proceed and if not give warning and clear the fields"""
+        usr = (self.user_name.get())
+        passwrd = (self.user_password.get())
+        if (usr == str(1234)) and (passwrd == str(1234)):
+            self.main_window = Toplevel(self.master)
+            self.app = Inventory(self.main_window)
+        else:
+            messagebox.showerror("System", "Need proper credential to enter", icon="warning")
+            self.user_entry.delete(0, END)
+            self.password_entry.delete(0, END)
+
+class Inventory:
+    """inventory class host"""
+
+    def __init__(self, master):
+        self.master = master
+        self.master.title("Inventory Management System")
+        self.master.geometry("1600x1000")
+        self.master.configure(bg="#c1e7f7")
         self.widget()
         self.list_all()
 
@@ -62,17 +155,16 @@ class Inventory:
     def get_selected_item(self, event):
         """return the selected item chosen by the user"""
         try:
-            global selected_item
+            global SELECTED_ITEM
             index = self.list_area.curselection()[0]
-            selected_item = self.list_area.get(index)
-            return selected_item
+            SELECTED_ITEM = self.list_area.get(index)
         except IndexError:
             pass
 
     def delete_item(self):
         """delete the selected item"""
         try:
-            database.delete(selected_item[0])
+            database.delete(SELECTED_ITEM[0])
             self.list_all()
         except:
             pass
@@ -84,7 +176,7 @@ class Inventory:
         qty = self.qty_text.get()
         purch_date = self.purch_date_text.get()
         try:
-            database.update(selected_item[0], name, price, qty, purch_date)
+            database.update(SELECTED_ITEM[0], name, price, qty, purch_date)
             self.list_all()
         except:
             pass
@@ -142,16 +234,6 @@ class Inventory:
         self.update_btn.grid(row=5, column=3)
         self.delete_btn = Button(self.master, text="Delete", width=10, command=self.delete_item)
         self.delete_btn.grid(row=6, column=3)
-
-
-def main():
-    """main method creates window"""
-    window = Tk()
-    app = Inventory(window)
-    window.title("Inventory Management System")
-    window.geometry("800x400")
-    window.configure(bg="#c1e7f7")
-    window.mainloop()
 
 
 if __name__ == '__main__':
