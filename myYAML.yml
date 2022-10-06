@@ -1,0 +1,9 @@
+---
+- name: John
+  hosts: all
+  apps:
+    - htop
+    - sshd
+    - iptables
+...
+
