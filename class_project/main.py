@@ -9,8 +9,9 @@ from tkinter import messagebox
 from tkinter import ttk
 import database
 
-
+"""main class that initializes the app"""
 class Inventory:
+    """inventory class host"""
     def __init__(self, master):
         self.master = master
         self.widget()
@@ -45,7 +46,7 @@ class Inventory:
                 self.list_area.delete(0, END)
                 self.list_area.insert(END, (name, price, qty, purch_date))
                 self.clear_field()
-                messagebox.showinfo("Success!", "Item is successfully added to the database", icon="info")
+                messagebox.showinfo("Success!", "Item successfully added", icon="info")
             except Exception as err:
                 messagebox.showerror(err, "Failed to add to the database", icon="warning")
         else:
@@ -78,9 +79,12 @@ class Inventory:
 
     def update_item(self):
         """update field selected by the user"""
+        name = self.name_text.get()
+        price = self.price_text.get()
+        qty = self.qty_text.get()
+        purch_date = self.purch_date_text.get()
         try:
-            database.update(selected_item[0], self.name_text.get(), self.price_text.get(), self.qty_text.get(),
-                            self.purch_date_text.get())
+            database.update(selected_item[0], name, price, qty, purch_date)
             self.list_all()
         except:
             pass
@@ -127,8 +131,8 @@ class Inventory:
         self.list_area.bind('<<ListboxSelect>>', self.get_selected_item)
 
         # buttons
-        self.list_btn = Button(self.master, text="List all", fg="blue", bg="blue", relief="raised", width=10,
-                               command=self.list_all)
+        self.list_btn = Button(self.master, text="List all", fg="blue", bg="blue"
+                               , relief="raised", width=10, command=self.list_all)
         self.list_btn.grid(row=2, column=3)
         self.search_btn = Button(self.master, text="Search", width=10, command=self.search_item)
         self.search_btn.grid(row=3, column=3)
@@ -141,6 +145,7 @@ class Inventory:
 
 
 def main():
+    """main method creates window"""
     window = Tk()
     app = Inventory(window)
     window.title("Inventory Management System")
