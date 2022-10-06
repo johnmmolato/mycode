@@ -16,21 +16,24 @@ class Inventory:
         self.widget()
         self.list_all()
 
-
     def list_all(self):
+        """grabbing data from the database and list it"""
         self.list_area.delete(0, END)
         for item in database.view():
             self.list_area.insert(END, item)
 
-
     def search_item(self):
+        """search item from the database"""
         self.list_area.delete(0, END)
-        for item in database.search(self.name_text.get(), self.price_text.get(), self.qty_text.get(), self.purch_date_text.get()):
+
+        for item in database.search(self.name_text.get(), self.price_text.get(),
+                                    self.qty_text.get(), self.purch_date_text.get()):
             self.list_area.insert(END, item)
+
         self.clear_field()
 
-
     def add_item(self):
+        """add item to the list"""
         name = self.name_text.get()
         price = self.price_text.get()
         qty = self.qty_text.get()
@@ -42,20 +45,21 @@ class Inventory:
                 self.list_area.delete(0, END)
                 self.list_area.insert(END, (name, price, qty, purch_date))
                 self.clear_field()
-                messagebox.showinfo("Success!", "Item is succesfully added to the database", icon="info")
-            except:
-                messagebox.showerror("Failed to add to the database", icon="warning")
+                messagebox.showinfo("Success!", "Item is successfully added to the database", icon="info")
+            except Exception as err:
+                messagebox.showerror(err, "Failed to add to the database", icon="warning")
         else:
             messagebox.showerror("Fields are required", "Please fill in all fields", icon="warning")
 
     def clear_field(self):
+        """clear the input fields"""
         self.name_entry.delete(0, END)
         self.price_entry.delete(0, END)
         self.qty_entry.delete(0, END)
         self.purch_date_entry.delete(0, END)
 
-
     def get_selected_item(self, event):
+        """return the selected item chosen by the user"""
         try:
             global selected_item
             index = self.list_area.curselection()[0]
@@ -64,8 +68,8 @@ class Inventory:
         except IndexError:
             pass
 
-
     def delete_item(self):
+        """delete the selected item"""
         try:
             database.delete(selected_item[0])
             self.list_all()
@@ -73,13 +77,16 @@ class Inventory:
             pass
 
     def update_item(self):
+        """update field selected by the user"""
         try:
-            database.update(selected_item[0], self.name_text.get(), self.price_text.get(), self.qty_text.get(), self.purch_date_text.get())
+            database.update(selected_item[0], self.name_text.get(), self.price_text.get(), self.qty_text.get(),
+                            self.purch_date_text.get())
             self.list_all()
         except:
             pass
 
     def widget(self):
+        """different widget component for the app"""
         # name
         self.name = Label(self.master, text="Name")
         self.name.grid(row=0, column=0)
@@ -120,7 +127,8 @@ class Inventory:
         self.list_area.bind('<<ListboxSelect>>', self.get_selected_item)
 
         # buttons
-        self.list_btn = Button(self.master, text="List all", fg="blue", bg="blue", relief="raised", width=10, command=self.list_all)
+        self.list_btn = Button(self.master, text="List all", fg="blue", bg="blue", relief="raised", width=10,
+                               command=self.list_all)
         self.list_btn.grid(row=2, column=3)
         self.search_btn = Button(self.master, text="Search", width=10, command=self.search_item)
         self.search_btn.grid(row=3, column=3)
@@ -131,6 +139,7 @@ class Inventory:
         self.delete_btn = Button(self.master, text="Delete", width=10, command=self.delete_item)
         self.delete_btn.grid(row=6, column=3)
 
+
 def main():
     window = Tk()
     app = Inventory(window)
@@ -138,6 +147,7 @@ def main():
     window.geometry("800x400")
     window.configure(bg="#c1e7f7")
     window.mainloop()
+
 
 if __name__ == '__main__':
     main()

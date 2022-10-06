@@ -2,6 +2,7 @@
 # import
 import sqlite3
 
+
 def connect():
     """establish connection to the database"""
     conn = sqlite3.connect("item.db")
