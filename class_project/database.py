@@ -7,7 +7,8 @@ def connect():
     """establish connection to the database"""
     conn = sqlite3.connect("item.db")
     cur = conn.cursor()
-    cur.execute("CREATE TABLE IF NOT EXISTS item (id INTEGER PRIMARY KEY, name text, qty real, price real, date text)")
+    cur.execute("CREATE TABLE IF NOT EXISTS item (id INTEGER PRIMARY KEY, name text"
+                ", qty real, price real, date text)")
     conn.commit()
     conn.close()
 
@@ -35,26 +36,28 @@ def search(name="", price="", qty="", date=""):
     """grab provided user input"""
     conn = sqlite3.connect("item.db")
     cur = conn.cursor()
-    cur.execute("SELECT * FROM item WHERE name=? OR price=? OR qty=? OR date=?", (name, price, qty, date))
+    cur.execute("SELECT * FROM item WHERE name=? OR price=? OR qty=? OR date=?",
+                (name, price, qty, date))
     searches = cur.fetchall()
     conn.close()
     return searches
 
 
-def delete(id):
+def delete(item_id):
     """delete the selected item"""
     conn = sqlite3.connect("item.db")
     cur = conn.cursor()
-    cur.execute("DELETE FROM item WHERE id=?", (id,))
+    cur.execute("DELETE FROM item WHERE id=?", (item_id,))
     conn.commit()
     conn.close()
 
 
-def update(id, name, price, qty, date):
+def update(item_id, name, price, qty, date):
     """update the list"""
     conn = sqlite3.connect("item.db")
     cur = conn.cursor()
-    cur.execute("UPDATE item SET name=?,price=?, qty=?, date=? WHERE id=?", (name, price, qty, date, id))
+    cur.execute("UPDATE item SET name=?,price=?, qty=?, date=? WHERE id=?",
+                (name, price, qty, date, item_id))
     conn.commit()
     conn.close()
 
