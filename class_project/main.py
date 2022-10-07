@@ -45,7 +45,7 @@ class LoginWindow:
         self.user_label.grid(row=0, column=0)
         self.user_entry = Entry(self.login_frame, font="arial, 23 bold", relief="ridge"
                                 , bd=10, textvariable=self.user_name)
-        self.user_entry.grid(row=0, column=1)
+        self.user_entry.grid(row=0, column=1, padx=50)
         self.password_label = Label(self.login_frame, text="User Password"
                                     , font="arial 23 bold", bd=10, bg="#71f5f0")
         self.password_label.grid(row=1, column=0)
@@ -75,11 +75,10 @@ class LoginWindow:
         """exit when user click yes"""
         self.exit_login = messagebox.askyesno("System", "Are you sure you want\
          to exit?", icon="warning")
-        if self.exit_login > 0:
+        if self.exit_login != 0:
             self.master.destroy()
         else:
-            command = self.inv_window
-            return command
+            self.inv_window
 
     def clear_cred(self):
         """clear input fields"""
