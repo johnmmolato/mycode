@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """The database for the inventory system"""
 # import
 import sqlite3

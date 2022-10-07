@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """John Molato | Class Project
 This is an inventory management system application
 with the functionality that allows user to search,
@@ -154,32 +155,32 @@ class Inventory:
     def get_selected_item(self, event):
         """return the selected item chosen by the user"""
         try:
-            global selected_item
+            global SELECTED_ITEM
             index = self.list_area.curselection()[0]
-            selected_item = self.list_area.get(index)
+            SELECTED_ITEM = self.list_area.get(index)
             self.name_entry.delete(0, END)
-            self.name_entry.insert(END, selected_item[1])
+            self.name_entry.insert(END, SELECTED_ITEM[1])
             self.price_entry.delete(0, END)
-            self.price_entry.insert(END, selected_item[2])
+            self.price_entry.insert(END, SELECTED_ITEM[2])
             self.qty_entry.delete(0, END)
-            self.qty_entry.insert(END, selected_item[3])
+            self.qty_entry.insert(END, SELECTED_ITEM[3])
             self.purch_date_entry.delete(0, END)
-            self.purch_date_entry.insert(END, selected_item[4])
-            return selected_item
+            self.purch_date_entry.insert(END, SELECTED_ITEM[4])
+            return SELECTED_ITEM
         except IndexError:
             pass
 
     def delete_item(self):
         """delete the selected item"""
         try:
-            database.delete(selected_item[0])
+            database.delete(SELECTED_ITEM[0])
             self.list_all()
         except:
             pass
 
     def update_item(self):
         """update field selected by the user"""
-        database.update(selected_item[0], self.name_text.get()
+        database.update(SELECTED_ITEM[0], self.name_text.get()
                         , self.price_text.get(), self.qty_text.get(), self.purch_date_text.get())
         self.list_all()
 
