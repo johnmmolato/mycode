@@ -6,7 +6,6 @@ create, update, delete"""
 # imported libraries and files
 from tkinter import *
 from tkinter import messagebox
-from tkinter import ttk
 import database
 
 
@@ -99,6 +98,7 @@ class LoginWindow:
             self.user_entry.delete(0, END)
             self.password_entry.delete(0, END)
 
+
 class Inventory:
     """inventory class host"""
 
@@ -155,31 +155,34 @@ class Inventory:
     def get_selected_item(self, event):
         """return the selected item chosen by the user"""
         try:
-            global SELECTED_ITEM
+            global selected_item
             index = self.list_area.curselection()[0]
-            SELECTED_ITEM = self.list_area.get(index)
+            selected_item = self.list_area.get(index)
+            self.name_entry.delete(0, END)
+            self.name_entry.insert(END, selected_item[1])
+            self.price_entry.delete(0, END)
+            self.price_entry.insert(END, selected_item[2])
+            self.qty_entry.delete(0, END)
+            self.qty_entry.insert(END, selected_item[3])
+            self.purch_date_entry.delete(0, END)
+            self.purch_date_entry.insert(END, selected_item[4])
+            return selected_item
         except IndexError:
             pass
 
     def delete_item(self):
         """delete the selected item"""
         try:
-            database.delete(SELECTED_ITEM[0])
+            database.delete(selected_item[0])
             self.list_all()
         except:
             pass
 
     def update_item(self):
         """update field selected by the user"""
-        name = self.name_text.get()
-        price = self.price_text.get()
-        qty = self.qty_text.get()
-        purch_date = self.purch_date_text.get()
-        try:
-            database.update(SELECTED_ITEM[0], name, price, qty, purch_date)
-            self.list_all()
-        except:
-            pass
+        database.update(selected_item[0], self.name_text.get()
+                        , self.price_text.get(), self.qty_text.get(), self.purch_date_text.get())
+        self.list_all()
 
     def widget(self):
         """different widget component for the app"""
@@ -223,16 +226,19 @@ class Inventory:
         self.list_area.bind('<<ListboxSelect>>', self.get_selected_item)
 
         # buttons
-        self.list_btn = Button(self.master, text="List all", fg="blue", bg="blue"
-                               , relief="raised", width=10, command=self.list_all)
+        self.list_btn = Button(self.master, text="List all", fg="blue"
+                               , width=10, command=self.list_all)
         self.list_btn.grid(row=2, column=3)
-        self.search_btn = Button(self.master, text="Search", width=10, command=self.search_item)
+        self.search_btn = Button(self.master, text="Search", fg="blue"
+                                 , width=10, command=self.search_item)
         self.search_btn.grid(row=3, column=3)
-        self.add_btn = Button(self.master, text="Add", width=10, command=self.add_item)
+        self.add_btn = Button(self.master, text="Add", width=10, fg="blue", command=self.add_item)
         self.add_btn.grid(row=4, column=3)
-        self.update_btn = Button(self.master, text="Update", width=10, command=self.update_item)
+        self.update_btn = Button(self.master, text="Update", width=10
+                                 , fg="blue", command=self.update_item)
         self.update_btn.grid(row=5, column=3)
-        self.delete_btn = Button(self.master, text="Delete", width=10, command=self.delete_item)
+        self.delete_btn = Button(self.master, text="Delete", width=10
+                                 , fg="blue", command=self.delete_item)
         self.delete_btn.grid(row=6, column=3)
 
 
